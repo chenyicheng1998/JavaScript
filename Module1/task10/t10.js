@@ -25,6 +25,6 @@ for (let i = 0; i < numSimulations; i++) {
 const probability = (successCount / numSimulations) * 100;
 
 
-document.querySelector('#target').innerHTML = 'Probability to get sum ' + targetSum + ' with ' + numDice + ' dice is ' + probability.toFixed(2) + '.';
+document.querySelector('#target').innerHTML = 'Probability to get sum ' + targetSum + ' with ' + numDice + ' dice is ' + probability.toFixed(2) + '%';
 
 
