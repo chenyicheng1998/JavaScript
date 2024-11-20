@@ -4,15 +4,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
     const resultsDiv = document.getElementById('results');
 
-    form.addEventListener('submit', function(event) {
+    form.addEventListener('submit', async function(event) {
         event.preventDefault();
 
         const value_from_input = document.getElementById('query').value;
 
-        fetch(`https://api.tvmaze.com/search/shows?q=${value_from_input}`)
-            .then(response => response.json())
-            .then(data => {
-                resultsDiv.innerHTML = '';  // Clear old results
+        try {
+            const response = await fetch(`https://api.tvmaze.com/search/shows?q=${value_from_input}`);
+            const data = await response.json();
+            resultsDiv.innerHTML = '';  // Clear old results
 
                 data.forEach(tvShow => {
                     const show = tvShow.show;
@@ -30,10 +30,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     link.target = "_blank";
                     link.textContent = "View Details";
 
-                    image.src = show.image ? show.image.medium : "https://via.placeholder.com/210x295?text=Not%20Found";
+                    image.src = show.image ?
+                        show.image.medium :
+                        "https://via.placeholder.com/210x295?text=Not%20Found";
                     image.alt = show.name;
 
-                    summaryDiv.innerHTML = show.summary || "No summary available";
+                    summaryDiv.innerHTML = show.summary ||
+                        "No summary available";
 
                     // Append elements to article
                     article.appendChild(title);
@@ -44,9 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Append article to resultsDiv
                     resultsDiv.appendChild(article);
                 });
-            })
-            .catch(error => {
-                    console.error('Error fetching data:', error);
-            });
+        } catch (error) {
+          console.log(error.message);
+        }
     });
 });

@@ -1,12 +1,11 @@
 'use strict';
 
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('https://api.chucknorris.io/jokes/random')
-        .then(response => response.json())
-        .then(data => {
-            console.log(data.value);  // Print only the joke to the console
-        })
-        .catch(error => {
-            console.error('Error fetching joke:', error);
-        });
+document.addEventListener('DOMContentLoaded', async function() {
+    try {
+        const response = await fetch('https://api.chucknorris.io/jokes/random');
+        const data = await response.json();
+        console.log(data.value);
+    } catch (error) {
+        console.log(error.message);
+    }
 });

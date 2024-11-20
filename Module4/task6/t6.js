@@ -15,15 +15,15 @@ document.addEventListener('DOMContentLoaded', function() {
     //     });
 
     // Listen for form submissions
-    form.addEventListener('submit', function(event) {
+    form.addEventListener('submit', async function(event) {
         event.preventDefault(); // Prevent the form from submitting the traditional way
-        const query = document.getElementById('query').value;
+        const value_from_input = document.getElementById('query').value;
 
         // Fetch jokes based on the search term
-        fetch(`https://api.chucknorris.io/jokes/search?query=${query}`)
-            .then(response => response.json())
-            .then(data => {
-                article.innerHTML = ''; // Clear previous jokes
+        try {
+            const request = await fetch(`https://api.chucknorris.io/jokes/search?query=${value_from_input}`);
+            const data = await request.json();
+            article.innerHTML = ''; // Clear previous jokes
 
                 if (data.result.length === 0) {
                     article.innerHTML = '<p>No jokes found.</p>';
@@ -34,10 +34,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         article.appendChild(jokeElement);
                     });
                 }
-            })
-            .catch(error => {
-                console.error('Error fetching jokes:', error);
-                article.innerHTML = '<p>Failed to load jokes.</p>';
-            });
+        } catch (error) {
+            console.log(error.message);
+            article.innerHTML = '<p>Failed to load jokes.</p>';
+        }
+
     });
 });
